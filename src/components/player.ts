@@ -10,6 +10,7 @@ import { canEmbedUrl, getPlatformName, getPlatformIcon } from '../utils/helpers'
 export class Player {
   private zoomLevel: number = 1;
   private currentIframe: HTMLIFrameElement | null = null;
+  private controlsHideTimer: number | null = null;
 
   constructor(
     private playerElement: HTMLElement,
@@ -18,6 +19,7 @@ export class Player {
     private contentBreadcrumb: HTMLElement
   ) {
     this.setupFullscreenListener();
+    this.setupControlsAutoHide();
   }
 
   /**
@@ -88,6 +90,7 @@ export class Player {
     // Agregar controles flotantes solo en móvil
     if (window.innerWidth <= 768) {
       this.addFloatingControls(isPDF, isVideo, isForm);
+      this.showControlsInitially();
     }
   }
 
@@ -272,5 +275,51 @@ export class Player {
         }
       }
     });
+  }
+
+  /**
+   * Configurar auto-hide de controles
+   */
+  private setupControlsAutoHide(): void {
+    // Mostrar controles al tocar/mover en el player
+    this.playerElement.addEventListener('touchstart', () => this.showControls());
+    this.playerElement.addEventListener('touchmove', () => this.showControls());
+    this.playerElement.addEventListener('click', (e) => {
+      // Solo mostrar si no se clickeó un botón de control
+      const target = e.target as HTMLElement;
+      if (!target.closest('.player-control-btn')) {
+        this.showControls();
+      }
+    });
+  }
+
+  /**
+   * Mostrar controles temporalmente
+   */
+  private showControls(): void {
+    const controls = this.playerElement.querySelector('.player-controls');
+    if (!controls || window.innerWidth > 768) return;
+
+    // Mostrar controles
+    controls.classList.add('visible');
+
+    // Cancelar timer anterior
+    if (this.controlsHideTimer) {
+      window.clearTimeout(this.controlsHideTimer);
+    }
+
+    // Ocultar después de 3 segundos
+    this.controlsHideTimer = window.setTimeout(() => {
+      controls.classList.remove('visible');
+    }, 3000);
+  }
+
+  /**
+   * Mostrar controles inicialmente
+   */
+  private showControlsInitially(): void {
+    if (window.innerWidth <= 768) {
+      setTimeout(() => this.showControls(), 500);
+    }
   }
 }
