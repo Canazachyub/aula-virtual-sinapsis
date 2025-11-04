@@ -146,9 +146,15 @@
 
   .player {
     min-height: calc(100vh - 64px);
-    height: calc(100vh - 64px);
+    height: auto;
+    max-height: calc(100vh - 64px);
     border-radius: 0;
     border: none;
+  }
+
+  .player iframe {
+    max-height: calc(100vh - 64px);
+    object-fit: contain;
   }
 }
 
@@ -203,8 +209,14 @@
 
   .player {
     min-height: calc(100vh - 64px);
-    height: calc(100vh - 64px);
+    height: auto;
+    max-height: calc(100vh - 64px);
     border-radius: 0;
+  }
+
+  .player iframe {
+    max-height: calc(100vh - 64px);
+    object-fit: contain;
   }
 }
 
@@ -229,8 +241,14 @@
 
   .player {
     min-height: calc(100vh - 56px);
-    height: calc(100vh - 56px);
+    height: auto;
+    max-height: calc(100vh - 56px);
     border-radius: 0;
+  }
+
+  .player iframe {
+    max-height: calc(100vh - 56px);
+    object-fit: contain;
   }
 }
 

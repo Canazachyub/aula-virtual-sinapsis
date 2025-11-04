@@ -88,10 +88,53 @@ export class Player {
     this.playerElement.appendChild(iframe);
     this.currentIframe = iframe;
 
-    // Agregar controles flotantes solo en móvil
+    // Agregar overlay para capturar gestos en móvil
     if (window.innerWidth <= 768) {
+      this.addTouchOverlay();
       this.addFloatingControls();
     }
+  }
+
+  /**
+   * Agregar overlay transparente para capturar gestos sobre iframe
+   */
+  private addTouchOverlay(): void {
+    const overlay = document.createElement('div');
+    overlay.className = 'touch-overlay';
+    overlay.style.cssText = `
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 5;
+      pointer-events: auto;
+      touch-action: none;
+    `;
+
+    // El overlay captura los gestos pero no interfiere con clicks simples
+    let isGesture = false;
+
+    overlay.addEventListener('touchstart', (e) => {
+      if (e.touches.length >= 2) {
+        isGesture = true;
+        overlay.style.pointerEvents = 'auto';
+      } else {
+        isGesture = false;
+        overlay.style.pointerEvents = 'none';
+      }
+    });
+
+    overlay.addEventListener('touchend', () => {
+      // Después de un gesto, permitir clicks por un momento
+      setTimeout(() => {
+        if (!isGesture) {
+          overlay.style.pointerEvents = 'none';
+        }
+      }, 100);
+    });
+
+    this.playerElement.appendChild(overlay);
   }
 
   /**
@@ -191,9 +234,16 @@ export class Player {
   private applyZoom(): void {
     if (this.currentIframe) {
       this.currentIframe.style.transform = `scale(${this.zoomLevel})`;
-      this.currentIframe.style.transformOrigin = 'top left';
+      this.currentIframe.style.transformOrigin = 'center center';
       this.currentIframe.style.width = `${100 / this.zoomLevel}%`;
       this.currentIframe.style.height = `${100 / this.zoomLevel}%`;
+
+      // Permitir scroll cuando hay zoom
+      if (this.zoomLevel > 1) {
+        this.playerElement.style.overflow = 'auto';
+      } else {
+        this.playerElement.style.overflow = 'hidden';
+      }
     }
   }
 
