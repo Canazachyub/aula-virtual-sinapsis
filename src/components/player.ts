@@ -11,6 +11,7 @@ export class Player {
   private zoomLevel: number = 1;
   private currentIframe: HTMLIFrameElement | null = null;
   private controlsHideTimer: number | null = null;
+  private longPressTimer: number | null = null;
 
   constructor(
     private playerElement: HTMLElement,
@@ -19,7 +20,7 @@ export class Player {
     private contentBreadcrumb: HTMLElement
   ) {
     this.setupFullscreenListener();
-    this.setupControlsAutoHide();
+    this.setupLongPressControls();
   }
 
   /**
@@ -90,7 +91,6 @@ export class Player {
     // Agregar controles flotantes solo en móvil
     if (window.innerWidth <= 768) {
       this.addFloatingControls(isPDF, isVideo, isForm);
-      this.showControlsInitially();
     }
   }
 
@@ -278,18 +278,53 @@ export class Player {
   }
 
   /**
-   * Configurar auto-hide de controles
+   * Configurar long-press para mostrar controles
    */
-  private setupControlsAutoHide(): void {
-    // Mostrar controles al tocar/mover en el player
-    this.playerElement.addEventListener('touchstart', () => this.showControls());
-    this.playerElement.addEventListener('touchmove', () => this.showControls());
-    this.playerElement.addEventListener('click', (e) => {
-      // Solo mostrar si no se clickeó un botón de control
+  private setupLongPressControls(): void {
+    let touchStarted = false;
+
+    // Touch start - iniciar temporizador de long-press
+    this.playerElement.addEventListener('touchstart', (e) => {
       const target = e.target as HTMLElement;
-      if (!target.closest('.player-control-btn')) {
-        this.showControls();
+      // No activar si tocó un botón de control
+      if (target.closest('.player-control-btn')) return;
+
+      touchStarted = true;
+
+      // Long-press: mantener 3 segundos
+      this.longPressTimer = window.setTimeout(() => {
+        if (touchStarted) {
+          this.showControls();
+          // Vibración para feedback (si está disponible)
+          if ('vibrate' in navigator) {
+            navigator.vibrate(50);
+          }
+        }
+      }, 3000);
+    });
+
+    // Touch move - cancelar si se mueve mucho (es scroll, no long-press)
+    this.playerElement.addEventListener('touchmove', () => {
+      if (this.longPressTimer) {
+        window.clearTimeout(this.longPressTimer);
+        touchStarted = false;
       }
+    });
+
+    // Touch end - cancelar si suelta antes de 3 segundos
+    this.playerElement.addEventListener('touchend', () => {
+      if (this.longPressTimer) {
+        window.clearTimeout(this.longPressTimer);
+      }
+      touchStarted = false;
+    });
+
+    // Touch cancel - cancelar
+    this.playerElement.addEventListener('touchcancel', () => {
+      if (this.longPressTimer) {
+        window.clearTimeout(this.longPressTimer);
+      }
+      touchStarted = false;
     });
   }
 
@@ -312,14 +347,5 @@ export class Player {
     this.controlsHideTimer = window.setTimeout(() => {
       controls.classList.remove('visible');
     }, 3000);
-  }
-
-  /**
-   * Mostrar controles inicialmente
-   */
-  private showControlsInitially(): void {
-    if (window.innerWidth <= 768) {
-      setTimeout(() => this.showControls(), 500);
-    }
   }
 }
