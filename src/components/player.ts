@@ -8,12 +8,17 @@ import { escapeHtml } from '../utils/dom.utils';
 import { canEmbedUrl, getPlatformName, getPlatformIcon } from '../utils/helpers';
 
 export class Player {
+  private zoomLevel: number = 1;
+  private currentIframe: HTMLIFrameElement | null = null;
+
   constructor(
     private playerElement: HTMLElement,
     private contentTitle: HTMLElement,
     private contentIcon: HTMLElement,
     private contentBreadcrumb: HTMLElement
-  ) {}
+  ) {
+    this.setupFullscreenListener();
+  }
 
   /**
    * Renderiza un item en el player
@@ -48,16 +53,42 @@ export class Player {
    * Renderiza contenido embebido
    */
   private renderEmbedded(item: CourseItem): void {
+    // Detectar tipo de contenido
+    const isPDF = item.mime === 'application/pdf' || item.type === 'pdf' || item.url.includes('.pdf');
+    const isVideo = item.mime?.includes('video') || item.type === 'video' || item.url.includes('youtube.com') || item.url.includes('vimeo.com');
+    const isForm = item.url.includes('forms.gle') || item.url.includes('forms.google.com');
+
+    // Mejorar URL según tipo de contenido
+    let enhancedUrl = item.embedUrl;
+
+    if (isPDF && item.embedUrl.includes('drive.google.com')) {
+      // Mejorar PDFs de Google Drive para permitir zoom
+      enhancedUrl = item.embedUrl.includes('?')
+        ? `${item.embedUrl}&embedded=true&rm=minimal`
+        : `${item.embedUrl}?embedded=true&rm=minimal`;
+    }
+
     const iframe = document.createElement('iframe');
     iframe.allow = 'autoplay; clipboard-write; encrypted-media; picture-in-picture; fullscreen';
     iframe.referrerPolicy = 'strict-origin-when-cross-origin';
     iframe.allowFullscreen = true;
-    iframe.src = item.embedUrl;
+    iframe.src = enhancedUrl;
     iframe.title = item.name || 'Contenido embebido';
     iframe.loading = 'lazy';
 
+    // Agregar atributos específicos para PDFs
+    if (isPDF) {
+      iframe.setAttribute('scrolling', 'yes');
+    }
+
     this.playerElement.innerHTML = '';
     this.playerElement.appendChild(iframe);
+    this.currentIframe = iframe;
+
+    // Agregar controles flotantes solo en móvil
+    if (window.innerWidth <= 768) {
+      this.addFloatingControls(isPDF, isVideo, isForm);
+    }
   }
 
   /**
@@ -130,5 +161,116 @@ export class Player {
         <p style="margin-top: 14px;">Cargando...</p>
       </div>
     `;
+  }
+
+  /**
+   * Agrega controles flotantes de zoom y fullscreen
+   */
+  private addFloatingControls(isPDF: boolean, isVideo: boolean, isForm: boolean): void {
+    // Crear contenedor de controles
+    const controls = document.createElement('div');
+    controls.className = 'player-controls';
+
+    // Botón de fullscreen (siempre visible en móvil)
+    const fullscreenBtn = document.createElement('button');
+    fullscreenBtn.className = 'player-control-btn fullscreen';
+    fullscreenBtn.innerHTML = '<i class="fas fa-expand"></i>';
+    fullscreenBtn.setAttribute('aria-label', 'Pantalla completa');
+    fullscreenBtn.addEventListener('click', () => this.toggleFullscreen());
+    controls.appendChild(fullscreenBtn);
+
+    // Botones de zoom solo para PDFs y contenido externo (no para videos ni forms)
+    if (isPDF && !isVideo && !isForm) {
+      const zoomInBtn = document.createElement('button');
+      zoomInBtn.className = 'player-control-btn';
+      zoomInBtn.innerHTML = '<i class="fas fa-plus"></i>';
+      zoomInBtn.setAttribute('aria-label', 'Aumentar zoom');
+      zoomInBtn.addEventListener('click', () => this.zoomIn());
+      controls.appendChild(zoomInBtn);
+
+      const zoomOutBtn = document.createElement('button');
+      zoomOutBtn.className = 'player-control-btn';
+      zoomOutBtn.innerHTML = '<i class="fas fa-minus"></i>';
+      zoomOutBtn.setAttribute('aria-label', 'Reducir zoom');
+      zoomOutBtn.addEventListener('click', () => this.zoomOut());
+      controls.appendChild(zoomOutBtn);
+
+      const zoomResetBtn = document.createElement('button');
+      zoomResetBtn.className = 'player-control-btn';
+      zoomResetBtn.innerHTML = '<i class="fas fa-undo"></i>';
+      zoomResetBtn.setAttribute('aria-label', 'Restablecer zoom');
+      zoomResetBtn.addEventListener('click', () => this.resetZoom());
+      controls.appendChild(zoomResetBtn);
+    }
+
+    this.playerElement.appendChild(controls);
+  }
+
+  /**
+   * Aumentar zoom
+   */
+  private zoomIn(): void {
+    if (this.zoomLevel < 3) {
+      this.zoomLevel += 0.25;
+      this.applyZoom();
+    }
+  }
+
+  /**
+   * Reducir zoom
+   */
+  private zoomOut(): void {
+    if (this.zoomLevel > 0.5) {
+      this.zoomLevel -= 0.25;
+      this.applyZoom();
+    }
+  }
+
+  /**
+   * Restablecer zoom
+   */
+  private resetZoom(): void {
+    this.zoomLevel = 1;
+    this.applyZoom();
+  }
+
+  /**
+   * Aplicar zoom al iframe
+   */
+  private applyZoom(): void {
+    if (this.currentIframe) {
+      this.currentIframe.style.transform = `scale(${this.zoomLevel})`;
+      this.currentIframe.style.transformOrigin = 'top left';
+      this.currentIframe.style.width = `${100 / this.zoomLevel}%`;
+      this.currentIframe.style.height = `${100 / this.zoomLevel}%`;
+    }
+  }
+
+  /**
+   * Activar/desactivar pantalla completa
+   */
+  private toggleFullscreen(): void {
+    if (!document.fullscreenElement) {
+      this.playerElement.requestFullscreen().catch((err) => {
+        console.error('Error al activar pantalla completa:', err);
+      });
+    } else {
+      document.exitFullscreen();
+    }
+  }
+
+  /**
+   * Configurar listener para cambios de fullscreen
+   */
+  private setupFullscreenListener(): void {
+    document.addEventListener('fullscreenchange', () => {
+      const fullscreenBtn = this.playerElement.querySelector('.fullscreen');
+      if (fullscreenBtn) {
+        const icon = fullscreenBtn.querySelector('i');
+        if (icon) {
+          icon.className = document.fullscreenElement ? 'fas fa-compress' : 'fas fa-expand';
+        }
+      }
+    });
   }
 }
