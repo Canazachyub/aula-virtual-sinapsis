@@ -1,0 +1,250 @@
+/**
+ * Estilos responsive y media queries
+ */
+
+/* ============================================
+   SIDEBAR COLAPSADO (Desktop)
+   ============================================ */
+
+@media (min-width: 769px) {
+  .sidebar.collapsed {
+    width: var(--sidebar-collapsed-width);
+  }
+
+  .sidebar.collapsed .sidebar-header {
+    padding: 14px 6px;
+  }
+
+  .sidebar.collapsed .sidebar-title,
+  .sidebar.collapsed .search-box,
+  .sidebar.collapsed .progress-bar {
+    opacity: 0;
+    visibility: hidden;
+    height: 0;
+    margin: 0;
+    padding: 0;
+  }
+
+  .sidebar.collapsed .section-title {
+    font-size: 9px;
+    padding: 6px 2px;
+    text-align: center;
+    writing-mode: vertical-lr;
+    transform: rotate(180deg);
+  }
+
+  .sidebar.collapsed .sub-title {
+    display: none;
+  }
+
+  .sidebar.collapsed .lesson-name {
+    display: none;
+  }
+
+  .sidebar.collapsed .lesson-item a {
+    justify-content: center;
+    padding: 12px 8px;
+    position: relative;
+  }
+
+  .sidebar.collapsed .lesson-item a:hover::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    left: 100%;
+    top: 50%;
+    transform: translateY(-50%);
+    background: var(--text-primary);
+    color: white;
+    padding: 8px 12px;
+    border-radius: 8px;
+    white-space: nowrap;
+    font-size: 13px;
+    margin-left: 10px;
+    z-index: 1000;
+    pointer-events: none;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  }
+
+  .sidebar.collapsed .lesson-icon {
+    margin: 0;
+  }
+}
+
+/* ============================================
+   TABLETS Y MÓVILES
+   ============================================ */
+
+@media (max-width: 768px) {
+  .menu-toggle {
+    display: flex;
+  }
+
+  .logo-main {
+    font-size: 14px;
+  }
+
+  .logo-sub {
+    font-size: 9px;
+  }
+
+  .btn-action span {
+    display: none;
+  }
+
+  .btn-action {
+    padding: 8px;
+    min-width: 38px;
+    min-height: 38px;
+    justify-content: center;
+  }
+
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    height: 100%;
+    transform: translateX(-100%);
+    z-index: 95;
+    box-shadow: 4px 0 16px rgba(0,0,0,0.15);
+  }
+
+  .sidebar.active {
+    transform: translateX(0);
+  }
+
+  .sidebar-overlay.active {
+    display: block;
+  }
+
+  .sidebar-toggle {
+    display: none !important;
+  }
+
+  .nav-controls {
+    display: none;
+  }
+
+  .mobile-bottom-nav {
+    display: block;
+  }
+
+  .content-header {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    backdrop-filter: blur(10px);
+    background: rgba(255,255,255,0.95);
+  }
+}
+
+/* ============================================
+   DESKTOP
+   ============================================ */
+
+@media (min-width: 1025px) {
+  .mobile-bottom-nav {
+    display: none !important;
+  }
+
+  .menu-toggle {
+    display: none !important;
+  }
+
+  .btn-action span {
+    display: inline-block;
+  }
+
+  .sidebar-toggle {
+    display: flex !important;
+  }
+}
+
+/* ============================================
+   MÓVILES PEQUEÑOS
+   ============================================ */
+
+@media (max-width: 480px) {
+  .logo i {
+    font-size: 20px;
+  }
+
+  .logo-main {
+    font-size: 13px;
+  }
+
+  .logo-sub {
+    font-size: 8px;
+  }
+
+  .course-select {
+    min-width: 100px;
+    max-width: 120px;
+    font-size: 12px;
+  }
+
+  .content-title {
+    font-size: 16px;
+  }
+
+  .content-breadcrumb {
+    font-size: 12px;
+  }
+}
+
+/* ============================================
+   LANDSCAPE (Móviles en horizontal)
+   ============================================ */
+
+@media (max-width: 768px) and (orientation: landscape) {
+  .header {
+    padding: 0 12px;
+  }
+
+  .player-container {
+    padding: 12px;
+  }
+}
+
+/* ============================================
+   DARK MODE (si el usuario lo tiene activado)
+   ============================================ */
+
+@media (prefers-color-scheme: dark) {
+  /* Puedes agregar estilos dark mode aquí en el futuro */
+}
+
+/* ============================================
+   REDUCCIÓN DE MOVIMIENTO
+   ============================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ============================================
+   IMPRESIÓN
+   ============================================ */
+
+@media print {
+  .header,
+  .sidebar,
+  .nav-controls,
+  .mobile-bottom-nav {
+    display: none !important;
+  }
+
+  .main-content {
+    width: 100%;
+  }
+
+  .player {
+    border: 1px solid #000;
+  }
+}

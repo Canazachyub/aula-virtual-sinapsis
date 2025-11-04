@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="theme-color" content="#6366f1">
+  <meta name="format-detection" content="telephone=no">
+
+  <title>Aula Virtual SINAPSIS PREU</title>
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="header-left">
+      <button id="menuToggle" class="menu-toggle" aria-label="Menú">
+        <i class="fas fa-bars"></i>
+      </button>
+      <div class="logo">
+        <i class="fas fa-graduation-cap"></i>
+        <div class="logo-text">
+          <span class="logo-main">AULA VIRTUAL</span>
+          <span class="logo-sub">SINAPSIS PREU</span>
+        </div>
+      </div>
+    </div>
+    <div class="header-right">
+      <select id="courseSelect" class="course-select" aria-label="Seleccionar curso">
+        <option value="">Hoja 1</option>
+      </select>
+      <button id="btnRefresh" class="btn-action" title="Actualizar" aria-label="Actualizar">
+        <i class="fas fa-sync-alt"></i>
+        <span>Actualizar</span>
+      </button>
+      <a href="#" id="btnHome" class="btn-action" aria-label="Inicio">
+        <i class="fas fa-home"></i>
+        <span>Inicio</span>
+      </a>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <div class="main-container">
+    <!-- Sidebar Overlay (móvil) -->
+    <div id="sidebarOverlay" class="sidebar-overlay"></div>
+
+    <!-- Sidebar -->
+    <aside id="sidebar" class="sidebar" role="navigation">
+      <button id="sidebarToggle" class="sidebar-toggle" aria-label="Colapsar menú" title="Minimizar/Expandir menú">
+        <i class="fas fa-chevron-left"></i>
+      </button>
+
+      <div class="sidebar-header">
+        <h2 class="sidebar-title" id="courseTitle">Hoja 1</h2>
+        <div class="progress-bar">
+          <div id="progressFill" class="progress-fill"></div>
+        </div>
+        <div class="search-box">
+          <input id="searchInput" class="search-input" type="search" placeholder="🔍 Buscar material..." aria-label="Buscar recurso">
+          <i class="fas fa-search search-icon" aria-hidden="true"></i>
+        </div>
+      </div>
+
+      <nav id="navContainer" class="course-navigation" aria-label="Navegación del curso">
+        <div style="padding: 24px; text-align: center; color: #999;">
+          <div class="loading-spinner"></div>
+          <p style="margin-top: 14px; font-size: 14px; font-weight: 600;">Cargando recursos...</p>
+        </div>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content" role="main">
+      <div class="content-header">
+        <div class="content-title-wrapper">
+          <i id="contentIcon" class="fas fa-file-pdf content-icon" aria-hidden="true"></i>
+          <div class="content-info">
+            <h1 id="contentTitle" class="content-title">Clase 1 - Anatomía.pdf</h1>
+            <div id="contentBreadcrumb" class="content-breadcrumb">
+              Anatomía - Training Medic - QX MEDIC › PDF ANATOMÍA
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="player-container">
+        <div id="player" class="player" role="region" aria-label="Reproductor de contenido">
+          <div class="player-empty">
+            <i class="fas fa-rocket" aria-hidden="true"></i>
+            <h3>¡Comienza tu aprendizaje!</h3>
+            <p>Selecciona un recurso del menú para empezar</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Desktop Navigation -->
+      <div class="nav-controls">
+        <button id="prevBtn" class="nav-btn" disabled aria-label="Recurso anterior">
+          <i class="fas fa-chevron-left"></i>
+          Anterior
+        </button>
+        <span id="navInfo" class="nav-info" aria-live="polite">1 de 32</span>
+        <button id="nextBtn" class="nav-btn" aria-label="Siguiente recurso">
+          Siguiente
+          <i class="fas fa-chevron-right"></i>
+        </button>
+      </div>
+    </main>
+  </div>
+
+  <!-- Mobile Bottom Navigation -->
+  <nav class="mobile-bottom-nav" role="navigation" aria-label="Navegación móvil">
+    <div class="mobile-nav-container">
+      <button id="mobileMenuBtn" class="mobile-nav-btn" aria-label="Menú">
+        <i class="fas fa-bars"></i>
+        <span>Menú</span>
+      </button>
+
+      <button id="mobilePrevBtn" class="mobile-nav-btn" disabled aria-label="Anterior">
+        <i class="fas fa-chevron-left"></i>
+        <span>Anterior</span>
+      </button>
+
+      <button id="mobileHomeBtn" class="mobile-nav-btn" aria-label="Inicio">
+        <i class="fas fa-home"></i>
+        <span>Inicio</span>
+        <span id="resourceCounter" class="nav-counter">32</span>
+      </button>
+
+      <button id="mobileNextBtn" class="mobile-nav-btn" aria-label="Siguiente">
+        <i class="fas fa-chevron-right"></i>
+        <span>Siguiente</span>
+      </button>
+
+      <button id="mobileRefreshBtn" class="mobile-nav-btn" aria-label="Actualizar">
+        <i class="fas fa-sync-alt"></i>
+        <span>Actualizar</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Toast -->
+  <div id="toast" class="toast" role="alert" aria-live="polite"></div>
+
+  <!-- Main Script (Vite lo inyectará) -->
+  <script type="module" src="/src/main.ts"></script>
+</body>
+</html>

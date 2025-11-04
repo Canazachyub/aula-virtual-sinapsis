@@ -1,0 +1,1900 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#6366f1">
+<meta name="format-detection" content="telephone=no">
+<title>Aula Virtual SINAPSIS PREU</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+<style>
+:root {
+  --primary-color: #6366f1;
+  --primary-light: #818cf8;
+  --secondary-color: #8b5cf6;
+  --accent-color: #ec4899;
+  --success-color: #10b981;
+  --warning-color: #f59e0b;
+  --sidebar-bg: #f8fafc;
+  --main-bg: #ffffff;
+  --text-primary: #1e293b;
+  --text-secondary: #64748b;
+  --border-color: #e2e8f0;
+  --hover-bg: #f1f5f9;
+  --card-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+  
+  --header-height: 60px;
+  --sidebar-width: 320px;
+  --sidebar-collapsed-width: 60px;
+  --bottom-nav-height: 0px;
+  --safe-area-inset-top: env(safe-area-inset-top, 0);
+  --safe-area-inset-bottom: env(safe-area-inset-bottom, 0);
+  --safe-area-inset-left: env(safe-area-inset-left, 0);
+  --safe-area-inset-right: env(safe-area-inset-right, 0);
+}
+
+@media (max-width: 768px) {
+  :root {
+    --header-height: 54px;
+    --sidebar-width: 280px;
+    --bottom-nav-height: 60px;
+  }
+}
+
+@media (max-width: 480px) {
+  :root {
+    --header-height: 50px;
+    --sidebar-width: 260px;
+    --bottom-nav-height: 56px;
+  }
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+}
+
+html {
+  font-size: 16px;
+  -webkit-text-size-adjust: 100%;
+  overflow: hidden;
+  height: 100%;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  background: linear-gradient(135deg, #f8fafc 0%, #e0e7ff 100%);
+  color: var(--text-primary);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  position: relative;
+  width: 100%;
+  overscroll-behavior: none;
+}
+
+body.no-scroll {
+  position: fixed;
+  overflow: hidden;
+}
+
+.header {
+  background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+  color: white;
+  padding: 0 16px;
+  padding-top: var(--safe-area-inset-top);
+  height: calc(var(--header-height) + var(--safe-area-inset-top));
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 4px 16px rgba(99, 102, 241, 0.3);
+  z-index: 100;
+  flex-shrink: 0;
+  position: relative;
+}
+
+.header::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent-color), var(--warning-color), var(--success-color));
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+  min-width: 0;
+}
+
+.logo {
+  font-size: 17px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+.logo i {
+  font-size: 22px;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+}
+
+.logo-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+}
+
+.logo-main {
+  font-size: 16px;
+  letter-spacing: 0.5px;
+}
+
+.logo-sub {
+  font-size: 10px;
+  opacity: 0.9;
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+
+.menu-toggle {
+  display: none;
+  background: rgba(255,255,255,0.15);
+  border: none;
+  color: white;
+  font-size: 20px;
+  cursor: pointer;
+  padding: 8px;
+  margin-left: -8px;
+  border-radius: 10px;
+  transition: all 0.2s;
+  min-width: 42px;
+  min-height: 42px;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(10px);
+}
+
+.menu-toggle:active {
+  background: rgba(255,255,255,0.25);
+  transform: scale(0.95);
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.btn-action {
+  background: rgba(255,255,255,0.15);
+  color: white;
+  border: 1px solid rgba(255,255,255,0.25);
+  padding: 9px 14px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  text-decoration: none;
+  transition: all 0.2s;
+  white-space: nowrap;
+  min-height: 38px;
+  font-weight: 600;
+  backdrop-filter: blur(10px);
+}
+
+.btn-action:hover {
+  background: rgba(255,255,255,0.25);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.btn-action:active {
+  transform: scale(0.98);
+}
+
+.course-select {
+  background: rgba(255,255,255,0.2);
+  color: white;
+  border: 1px solid rgba(255,255,255,0.3);
+  border-radius: 10px;
+  padding: 9px 8px;
+  font-size: 13px;
+  min-width: 120px;
+  max-width: 150px;
+  height: 38px;
+  font-weight: 600;
+  -webkit-appearance: none;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='white' d='M6 8L0 0h12z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  padding-right: 28px;
+  cursor: pointer;
+  backdrop-filter: blur(10px);
+}
+
+.course-select option {
+  background: var(--secondary-color);
+  color: white;
+}
+
+.main-container {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+  height: 100%;
+}
+
+.sidebar {
+  width: var(--sidebar-width);
+  background: var(--sidebar-bg);
+  border-right: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  flex-shrink: 0;
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+  box-shadow: 2px 0 12px rgba(0,0,0,0.05);
+}
+
+@media (min-width: 769px) {
+  .sidebar.collapsed {
+    width: var(--sidebar-collapsed-width);
+  }
+
+  .sidebar.collapsed .sidebar-header {
+    padding: 14px 6px;
+  }
+
+  .sidebar.collapsed .sidebar-title,
+  .sidebar.collapsed .search-box,
+  .sidebar.collapsed .progress-bar {
+    opacity: 0;
+    visibility: hidden;
+    height: 0;
+    margin: 0;
+    padding: 0;
+  }
+
+  .sidebar.collapsed .section-title {
+    font-size: 9px;
+    padding: 6px 2px;
+    text-align: center;
+    writing-mode: vertical-lr;
+    transform: rotate(180deg);
+  }
+
+  .sidebar.collapsed .sub-title {
+    display: none;
+  }
+
+  .sidebar.collapsed .lesson-name {
+    display: none;
+  }
+
+  .sidebar.collapsed .lesson-item a {
+    justify-content: center;
+    padding: 12px 8px;
+    position: relative;
+  }
+
+  .sidebar.collapsed .lesson-item a:hover::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    left: 100%;
+    top: 50%;
+    transform: translateY(-50%);
+    background: var(--text-primary);
+    color: white;
+    padding: 8px 12px;
+    border-radius: 8px;
+    white-space: nowrap;
+    font-size: 13px;
+    margin-left: 10px;
+    z-index: 1000;
+    pointer-events: none;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  }
+
+  .sidebar.collapsed .lesson-icon {
+    margin: 0;
+  }
+}
+
+.sidebar-toggle {
+  position: absolute;
+  right: -16px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 32px;
+  height: 64px;
+  background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+  border: none;
+  border-radius: 0 10px 10px 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+  transition: all 0.3s;
+  box-shadow: 2px 0 8px rgba(99, 102, 241, 0.3);
+}
+
+.sidebar-toggle:hover {
+  background: linear-gradient(135deg, var(--primary-light), var(--secondary-color));
+  right: -18px;
+  width: 34px;
+}
+
+.sidebar-toggle i {
+  color: white;
+  font-size: 16px;
+  transition: transform 0.3s;
+}
+
+.sidebar.collapsed .sidebar-toggle i {
+  transform: rotate(180deg);
+}
+
+.sidebar-header {
+  padding: 16px;
+  border-bottom: 1px solid var(--border-color);
+  background: white;
+  flex-shrink: 0;
+  transition: all 0.3s;
+}
+
+.sidebar-title {
+  font-size: 17px;
+  font-weight: 700;
+  margin-bottom: 12px;
+  line-height: 1.3;
+  color: var(--text-primary);
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.progress-bar {
+  height: 6px;
+  background: var(--border-color);
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 12px;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--success-color), var(--primary-color));
+  border-radius: 10px;
+  transition: width 0.5s ease;
+  width: 0%;
+}
+
+.search-box {
+  position: relative;
+  transition: all 0.3s;
+}
+
+.search-input {
+  width: 100%;
+  padding: 11px 38px 11px 12px;
+  border: 2px solid var(--border-color);
+  border-radius: 10px;
+  font-size: 14px;
+  transition: all 0.2s;
+  background: white;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+}
+
+.search-icon {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-secondary);
+  pointer-events: none;
+  font-size: 15px;
+}
+
+.course-navigation {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 12px;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+}
+
+.course-section {
+  margin-bottom: 20px;
+}
+
+.section-title {
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  padding: 10px 12px;
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(139, 92, 246, 0.1));
+  border-radius: 8px;
+  margin-bottom: 10px;
+  letter-spacing: 0.5px;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  backdrop-filter: blur(10px);
+  border-left: 3px solid var(--primary-color);
+}
+
+.sub-section {
+  margin-bottom: 14px;
+}
+
+.sub-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--primary-color);
+  margin: 8px 0 8px 8px;
+  line-height: 1.4;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.sub-title::before {
+  content: '📚';
+  font-size: 14px;
+}
+
+.lesson-list {
+  list-style: none;
+}
+
+.lesson-item {
+  margin-bottom: 3px;
+}
+
+.lesson-item a {
+  display: flex;
+  align-items: center;
+  padding: 12px 12px;
+  border-radius: 10px;
+  text-decoration: none;
+  color: var(--text-primary);
+  transition: all 0.2s;
+  gap: 10px;
+  min-height: 46px;
+  position: relative;
+  background: white;
+  border: 1px solid transparent;
+}
+
+.lesson-item a:hover {
+  background: var(--hover-bg);
+  border-color: var(--border-color);
+  transform: translateX(4px);
+}
+
+.lesson-item a:active {
+  transform: scale(0.98);
+}
+
+.lesson-item.active a {
+  background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+  color: white;
+  font-weight: 600;
+  box-shadow: var(--card-shadow);
+  border-color: var(--primary-color);
+}
+
+.lesson-icon {
+  font-size: 18px;
+  width: 26px;
+  text-align: center;
+  flex-shrink: 0;
+  transition: all 0.3s;
+}
+
+.lesson-item.active .lesson-icon {
+  animation: bounce 0.5s ease;
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+
+.lesson-name {
+  font-size: 14px;
+  line-height: 1.4;
+  word-break: break-word;
+  flex: 1;
+}
+
+.main-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  min-width: 0;
+  height: 100%;
+}
+
+.content-header {
+  padding: 16px;
+  border-bottom: 1px solid var(--border-color);
+  background: white;
+  flex-shrink: 0;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+}
+
+.content-title-wrapper {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.content-icon {
+  font-size: 24px;
+  color: var(--primary-color);
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.content-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.content-title {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 4px;
+  line-height: 1.3;
+  color: var(--text-primary);
+  word-break: break-word;
+}
+
+.content-breadcrumb {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.4;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.player-container {
+  flex: 1;
+  padding: 16px;
+  overflow: hidden;
+  background: linear-gradient(135deg, #f8fafc 0%, #e0e7ff 100%);
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+  padding-bottom: calc(var(--bottom-nav-height) + var(--safe-area-inset-bottom) + 16px);
+  display: flex;
+  flex-direction: column;
+}
+
+.player {
+  background: #000;
+  border-radius: 16px;
+  overflow: hidden;
+  min-height: 200px;
+  height: 100%;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+  position: relative;
+  border: 3px solid rgba(255,255,255,0.5);
+}
+
+.player iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.player-empty {
+  color: white;
+  text-align: center;
+  padding: 32px 20px;
+}
+
+.player-empty i {
+  font-size: 48px;
+  margin-bottom: 16px;
+  opacity: 0.8;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.player-empty p {
+  font-size: 15px;
+  opacity: 0.9;
+  line-height: 1.5;
+  margin-bottom: 8px;
+}
+
+.player-empty h3 {
+  font-size: 20px;
+  margin-bottom: 12px;
+  line-height: 1.3;
+  font-weight: 700;
+}
+
+.player-empty a {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 28px;
+  background: linear-gradient(135deg, var(--accent-color), var(--warning-color));
+  color: white;
+  border-radius: 12px;
+  text-decoration: none;
+  font-size: 15px;
+  font-weight: 700;
+  transition: all 0.2s;
+  margin-top: 20px;
+  box-shadow: 0 6px 20px rgba(236, 72, 153, 0.4);
+}
+
+.player-empty a:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(236, 72, 153, 0.5);
+}
+
+.player-empty a:active {
+  transform: scale(0.98);
+}
+
+.nav-controls {
+  padding: 14px 18px;
+  background: white;
+  border-top: 1px solid var(--border-color);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+  box-shadow: 0 -1px 4px rgba(0,0,0,0.05);
+}
+
+.nav-btn {
+  background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s;
+  font-weight: 700;
+  min-height: 44px;
+  box-shadow: 0 2px 8px rgba(99, 102, 241, 0.3);
+}
+
+.nav-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);
+}
+
+.nav-btn:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.nav-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.nav-info {
+  font-size: 14px;
+  color: var(--text-secondary);
+  font-weight: 700;
+  padding: 8px 16px;
+  background: var(--hover-bg);
+  border-radius: 8px;
+}
+
+.mobile-bottom-nav {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: white;
+  border-top: 1px solid var(--border-color);
+  padding: 8px 0;
+  padding-bottom: calc(8px + var(--safe-area-inset-bottom));
+  z-index: 100;
+  box-shadow: 0 -4px 16px rgba(0,0,0,0.08);
+}
+
+.mobile-nav-container {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 0 12px;
+}
+
+.mobile-nav-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  padding: 8px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: 11px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  transition: all 0.2s;
+  min-width: 60px;
+  position: relative;
+  font-weight: 600;
+}
+
+.mobile-nav-btn:active {
+  transform: scale(0.95);
+  background: var(--hover-bg);
+}
+
+.mobile-nav-btn.active {
+  color: var(--primary-color);
+}
+
+.mobile-nav-btn i {
+  font-size: 22px;
+  margin-bottom: 2px;
+}
+
+.mobile-nav-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.nav-counter {
+  position: absolute;
+  top: 0;
+  right: 8px;
+  background: linear-gradient(135deg, var(--accent-color), var(--warning-color));
+  color: white;
+  font-size: 9px;
+  padding: 2px 5px;
+  border-radius: 10px;
+  font-weight: 700;
+  min-width: 18px;
+  text-align: center;
+  box-shadow: 0 2px 6px rgba(236, 72, 153, 0.4);
+}
+
+.sidebar-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(99, 102, 241, 0.2);
+  z-index: 90;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+.loading-spinner {
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  border: 3px solid rgba(99, 102, 241, 0.2);
+  border-radius: 50%;
+  border-top-color: var(--primary-color);
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.toast {
+  position: fixed;
+  bottom: calc(var(--bottom-nav-height) + var(--safe-area-inset-bottom) + 20px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  color: white;
+  padding: 12px 20px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 600;
+  z-index: 200;
+  opacity: 0;
+  transition: opacity 0.3s;
+  pointer-events: none;
+  max-width: calc(100% - 40px);
+  text-align: center;
+  box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4);
+}
+
+.toast.show {
+  opacity: 1;
+}
+
+@media (max-width: 768px) {
+  .menu-toggle {
+    display: flex;
+  }
+  
+  .logo-main {
+    font-size: 14px;
+  }
+  
+  .logo-sub {
+    font-size: 9px;
+  }
+  
+  .btn-action span {
+    display: none;
+  }
+  
+  .btn-action {
+    padding: 8px;
+    min-width: 38px;
+    min-height: 38px;
+    justify-content: center;
+  }
+  
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    height: 100%;
+    transform: translateX(-100%);
+    z-index: 95;
+    box-shadow: 4px 0 16px rgba(0,0,0,0.15);
+  }
+  
+  .sidebar.active {
+    transform: translateX(0);
+  }
+  
+  .sidebar-overlay.active {
+    display: block;
+  }
+  
+  .sidebar-toggle {
+    display: none !important;
+  }
+  
+  .nav-controls {
+    display: none;
+  }
+  
+  .mobile-bottom-nav {
+    display: block;
+  }
+  
+  .content-header {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    backdrop-filter: blur(10px);
+    background: rgba(255,255,255,0.95);
+  }
+}
+
+@media (min-width: 1025px) {
+  .mobile-bottom-nav {
+    display: none !important;
+  }
+  
+  .menu-toggle {
+    display: none !important;
+  }
+  
+  .btn-action span {
+    display: inline-block;
+  }
+  
+  .sidebar-toggle {
+    display: flex !important;
+  }
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--sidebar-bg);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg, var(--primary-light), var(--accent-color));
+}
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-left">
+    <button id="menuToggle" class="menu-toggle" aria-label="Menú">
+      <i class="fas fa-bars"></i>
+    </button>
+    <div class="logo">
+      <i class="fas fa-graduation-cap"></i>
+      <div class="logo-text">
+        <span class="logo-main">AULA VIRTUAL</span>
+        <span class="logo-sub">SINAPSIS PREU</span>
+      </div>
+    </div>
+  </div>
+  <div class="header-right">
+    <select id="courseSelect" class="course-select" aria-label="Seleccionar curso">
+      <option value="">Hoja 1</option>
+    </select>
+    <button id="btnRefresh" class="btn-action" title="Actualizar" aria-label="Actualizar">
+      <i class="fas fa-sync-alt"></i>
+      <span>Actualizar</span>
+    </button>
+    <a href="#" id="btnHome" class="btn-action" aria-label="Inicio">
+      <i class="fas fa-home"></i>
+      <span>Inicio</span>
+    </a>
+  </div>
+</header>
+
+<div class="main-container">
+  <div id="sidebarOverlay" class="sidebar-overlay"></div>
+  
+  <aside id="sidebar" class="sidebar" role="navigation">
+    <button id="sidebarToggle" class="sidebar-toggle" aria-label="Colapsar menú" title="Minimizar/Expandir menú">
+      <i class="fas fa-chevron-left"></i>
+    </button>
+    <div class="sidebar-header">
+      <h2 class="sidebar-title" id="courseTitle">Hoja 1</h2>
+      <div class="progress-bar">
+        <div id="progressFill" class="progress-fill"></div>
+      </div>
+      <div class="search-box">
+        <input id="searchInput" class="search-input" type="search" placeholder="🔍 Buscar material..." aria-label="Buscar recurso">
+        <i class="fas fa-search search-icon" aria-hidden="true"></i>
+      </div>
+    </div>
+    <nav id="navContainer" class="course-navigation" aria-label="Navegación del curso">
+      <div style="padding: 24px; text-align: center; color: #999;">
+        <div class="loading-spinner"></div>
+        <p style="margin-top: 14px; font-size: 14px; font-weight: 600;">Cargando recursos...</p>
+      </div>
+    </nav>
+  </aside>
+
+  <main class="main-content" role="main">
+    <div class="content-header">
+      <div class="content-title-wrapper">
+        <i id="contentIcon" class="fas fa-file-pdf content-icon" aria-hidden="true"></i>
+        <div class="content-info">
+          <h1 id="contentTitle" class="content-title">Clase 1 - Anatomía.pdf</h1>
+          <div id="contentBreadcrumb" class="content-breadcrumb">
+            Anatomía - Training Medic - QX MEDIC › PDF ANATOMÍA
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="player-container">
+      <div id="player" class="player" role="region" aria-label="Reproductor de contenido">
+        <div class="player-empty">
+          <i class="fas fa-rocket" aria-hidden="true"></i>
+          <h3>¡Comienza tu aprendizaje!</h3>
+          <p>Selecciona un recurso del menú para empezar</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="nav-controls">
+      <button id="prevBtn" class="nav-btn" disabled aria-label="Recurso anterior">
+        <i class="fas fa-chevron-left"></i>
+        Anterior
+      </button>
+      <span id="navInfo" class="nav-info" aria-live="polite">1 de 32</span>
+      <button id="nextBtn" class="nav-btn" aria-label="Siguiente recurso">
+        Siguiente
+        <i class="fas fa-chevron-right"></i>
+      </button>
+    </div>
+  </main>
+</div>
+
+<nav class="mobile-bottom-nav" role="navigation" aria-label="Navegación móvil">
+  <div class="mobile-nav-container">
+    <button id="mobileMenuBtn" class="mobile-nav-btn" aria-label="Menú">
+      <i class="fas fa-bars"></i>
+      <span>Menú</span>
+    </button>
+    
+    <button id="mobilePrevBtn" class="mobile-nav-btn" disabled aria-label="Anterior">
+      <i class="fas fa-chevron-left"></i>
+      <span>Anterior</span>
+    </button>
+    
+    <button id="mobileHomeBtn" class="mobile-nav-btn" aria-label="Inicio">
+      <i class="fas fa-home"></i>
+      <span>Inicio</span>
+      <span id="resourceCounter" class="nav-counter">32</span>
+    </button>
+    
+    <button id="mobileNextBtn" class="mobile-nav-btn" aria-label="Siguiente">
+      <i class="fas fa-chevron-right"></i>
+      <span>Siguiente</span>
+    </button>
+    
+    <button id="mobileRefreshBtn" class="mobile-nav-btn" aria-label="Actualizar">
+      <i class="fas fa-sync-alt"></i>
+      <span>Actualizar</span>
+    </button>
+  </div>
+</nav>
+
+<div id="toast" class="toast" role="alert" aria-live="polite"></div>
+
+<script>
+(() => {
+  // ============================================
+  // 🔧 CONFIGURACIÓN DE LA API
+  // ============================================
+  // ⚠️ CAMBIA ESTA URL POR LA TUYA:
+  const API_URL = 'https://script.google.com/macros/s/AKfycbwdb4ToRIuHsfkfB5cXuQisJUY-qlUYxvX0d8mpkX9iGaH4eSj4QLNxhRCpRkDPQPbG/exec';
+  
+  // ============================================
+  // 📡 FUNCIONES DE API (Reemplazan google.script.run)
+  // ============================================
+  
+  /**
+   * Llama a la API con fetch() en lugar de google.script.run
+   */
+  async function callAPI(action, params = {}) {
+    try {
+      // Construir URL con parámetros
+      const url = new URL(API_URL);
+      url.searchParams.append('action', action);
+      
+      // Agregar parámetros adicionales
+      Object.keys(params).forEach(key => {
+        if (params[key] !== undefined && params[key] !== null) {
+          url.searchParams.append(key, params[key]);
+        }
+      });
+      
+      // Hacer la petición
+      const response = await fetch(url.toString());
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
+      const data = await response.json();
+      
+      // Verificar si hay error en la respuesta
+      if (data.error) {
+        throw new Error(data.message || 'Error desconocido');
+      }
+      
+      return data;
+      
+    } catch (error) {
+      console.error('Error en API:', error);
+      throw error;
+    }
+  }
+  
+  /**
+   * Obtiene la lista de hojas
+   */
+  async function apiGetSheets() {
+    return await callAPI('getSheets');
+  }
+  
+  /**
+   * Obtiene datos de un curso
+   */
+  async function apiGetCourseData(params) {
+    return await callAPI('getCourseData', params);
+  }
+
+  // ============================================
+  // 💾 ESTADO DE LA APLICACIÓN
+  // ============================================
+  
+  const state = {
+    sheets: [],
+    currentSheet: null,
+    items: [],
+    grouped: new Map(),
+    flat: [],
+    activeId: null,
+    sidebarOpen: false,
+    sidebarCollapsed: false,
+    isMobile: false,
+    isTablet: false
+  };
+
+  const $ = (sel, ctx = document) => ctx.querySelector(sel);
+  const $$ = (sel, ctx = document) => [...ctx.querySelectorAll(sel)];
+  const byId = id => $('#' + id);
+
+  function escapeHtml(str) {
+    const div = document.createElement('div');
+    div.textContent = str || '';
+    return div.innerHTML;
+  }
+
+  function detectDevice() {
+    const width = window.innerWidth;
+    state.isMobile = width <= 768;
+    state.isTablet = width > 768 && width <= 1024;
+    
+    if (!state.isMobile) {
+      const savedCollapsed = localStorage.getItem('sidebarCollapsed');
+      if (savedCollapsed === 'true') {
+        state.sidebarCollapsed = true;
+        byId('sidebar').classList.add('collapsed');
+      }
+    }
+  }
+
+  function showToast(message, duration = 3000) {
+    const toast = byId('toast');
+    toast.textContent = message;
+    toast.classList.add('show');
+    
+    setTimeout(() => {
+      toast.classList.remove('show');
+    }, duration);
+  }
+
+  function vibrate(pattern = [10]) {
+    if ('vibrate' in navigator && state.isMobile) {
+      navigator.vibrate(pattern);
+    }
+  }
+
+  function toggleSidebarCollapse() {
+    state.sidebarCollapsed = !state.sidebarCollapsed;
+    const sidebar = byId('sidebar');
+    
+    if (state.sidebarCollapsed) {
+      sidebar.classList.add('collapsed');
+    } else {
+      sidebar.classList.remove('collapsed');
+    }
+    
+    localStorage.setItem('sidebarCollapsed', state.sidebarCollapsed);
+    
+    const toggleBtn = byId('sidebarToggle');
+    if (toggleBtn) {
+      toggleBtn.title = state.sidebarCollapsed ? 'Expandir menú' : 'Minimizar menú';
+      toggleBtn.setAttribute('aria-label', state.sidebarCollapsed ? 'Expandir menú' : 'Minimizar menú');
+    }
+    
+    if (state.sidebarCollapsed) {
+      $$('.lesson-item a').forEach(link => {
+        const name = link.querySelector('.lesson-name')?.textContent || '';
+        link.setAttribute('data-tooltip', name);
+      });
+    }
+  }
+
+  function toggleSidebar() {
+    state.sidebarOpen = !state.sidebarOpen;
+    byId('sidebar').classList.toggle('active', state.sidebarOpen);
+    byId('sidebarOverlay').classList.toggle('active', state.sidebarOpen);
+    
+    if (state.isMobile) {
+      if (state.sidebarOpen) {
+        document.body.classList.add('no-scroll');
+        vibrate([10]);
+      } else {
+        document.body.classList.remove('no-scroll');
+      }
+    }
+  }
+
+  function closeSidebarIfMobile() {
+    if (state.isMobile && state.sidebarOpen) {
+      toggleSidebar();
+    }
+  }
+
+  function naturalCompare(a, b) {
+    const extractNum = str => {
+      const match = String(str || '').match(/\d+/);
+      return match ? parseInt(match[0]) : Infinity;
+    };
+    const numA = extractNum(a);
+    const numB = extractNum(b);
+    if (numA !== numB) return numA - numB;
+    return String(a || '').localeCompare(String(b || ''), 'es', {numeric: true});
+  }
+
+  function debounce(func, wait) {
+    let timeout;
+    return function executedFunction(...args) {
+      const later = () => {
+        clearTimeout(timeout);
+        func(...args);
+      };
+      clearTimeout(timeout);
+      timeout = setTimeout(later, wait);
+    };
+  }
+
+  function updateProgressBar() {
+    const progressFill = byId('progressFill');
+    if (!progressFill) return;
+    
+    const currentIndex = state.flat.findIndex(x => x.id === state.activeId);
+    const total = state.flat.length;
+    
+    if (total > 0 && currentIndex >= 0) {
+      const percentage = ((currentIndex + 1) / total) * 100;
+      progressFill.style.width = percentage + '%';
+    } else {
+      progressFill.style.width = '0%';
+    }
+  }
+
+  function init() {
+    detectDevice();
+    
+    byId('menuToggle').addEventListener('click', toggleSidebar);
+    byId('sidebarOverlay').addEventListener('click', toggleSidebar);
+    
+    const sidebarToggle = byId('sidebarToggle');
+    if (sidebarToggle) {
+      sidebarToggle.addEventListener('click', e => {
+        e.preventDefault();
+        e.stopPropagation();
+        toggleSidebarCollapse();
+      });
+    }
+    
+    const mobileMenuBtn = byId('mobileMenuBtn');
+    if (mobileMenuBtn) {
+      mobileMenuBtn.addEventListener('click', () => {
+        toggleSidebar();
+        vibrate([10]);
+      });
+    }
+    
+    const mobilePrevBtn = byId('mobilePrevBtn');
+    if (mobilePrevBtn) {
+      mobilePrevBtn.addEventListener('click', () => {
+        navigate(-1);
+        vibrate([5]);
+      });
+    }
+    
+    const mobileNextBtn = byId('mobileNextBtn');
+    if (mobileNextBtn) {
+      mobileNextBtn.addEventListener('click', () => {
+        navigate(1);
+        vibrate([5]);
+      });
+    }
+    
+    const mobileHomeBtn = byId('mobileHomeBtn');
+    if (mobileHomeBtn) {
+      mobileHomeBtn.addEventListener('click', () => {
+        if (state.flat.length > 0) {
+          selectItem(state.flat[0].id);
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+          vibrate([10]);
+        }
+      });
+    }
+    
+    const mobileRefreshBtn = byId('mobileRefreshBtn');
+    if (mobileRefreshBtn) {
+      mobileRefreshBtn.addEventListener('click', () => {
+        refreshData();
+        vibrate([10]);
+      });
+    }
+    
+    byId('prevBtn').addEventListener('click', () => navigate(-1));
+    byId('nextBtn').addEventListener('click', () => navigate(1));
+    byId('btnRefresh').addEventListener('click', refreshData);
+    byId('btnHome').addEventListener('click', e => {
+      e.preventDefault();
+      if (state.flat.length > 0) {
+        selectItem(state.flat[0].id);
+      }
+    });
+    
+    byId('courseSelect').addEventListener('change', e => {
+      if (e.target.value) {
+        loadCourse(e.target.value);
+        closeSidebarIfMobile();
+      }
+    });
+    
+    const debouncedSearch = debounce(onSearch, 300);
+    byId('searchInput').addEventListener('input', debouncedSearch);
+    
+    byId('searchInput').addEventListener('focus', e => {
+      if (state.isMobile) {
+        e.target.style.fontSize = '16px';
+      }
+    });
+    
+    document.addEventListener('keydown', e => {
+      if (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT') return;
+      
+      switch(e.key) {
+        case 'ArrowLeft':
+          navigate(-1);
+          break;
+        case 'ArrowRight':
+          navigate(1);
+          break;
+        case 'Escape':
+          if (state.sidebarOpen) toggleSidebar();
+          break;
+        case 'b':
+        case 'B':
+          if (!state.isMobile && e.ctrlKey) {
+            e.preventDefault();
+            toggleSidebarCollapse();
+          }
+          break;
+      }
+    });
+    
+    window.addEventListener('resize', debounce(() => {
+      const wasMobile = state.isMobile;
+      detectDevice();
+      
+      if (wasMobile !== state.isMobile) {
+        if (!state.isMobile && state.sidebarOpen) {
+          byId('sidebar').classList.remove('active');
+          byId('sidebarOverlay').classList.remove('active');
+          document.body.classList.remove('no-scroll');
+          state.sidebarOpen = false;
+        }
+      }
+    }, 250));
+    
+    if (state.isMobile) {
+      setupTouchGestures();
+    }
+    
+    // ✅ INICIALIZAR LLAMANDO A LA API
+    initCourses();
+  }
+
+  function setupTouchGestures() {
+    let touchStartX = 0;
+    let touchEndX = 0;
+    const threshold = 50;
+    
+    document.addEventListener('touchstart', e => {
+      touchStartX = e.changedTouches[0].screenX;
+    }, { passive: true });
+    
+    document.addEventListener('touchend', e => {
+      touchEndX = e.changedTouches[0].screenX;
+      handleSwipe();
+    }, { passive: true });
+    
+    function handleSwipe() {
+      const diff = touchEndX - touchStartX;
+      
+      if (Math.abs(diff) > threshold) {
+        if (diff > 0) {
+          if (touchStartX < 30 && !state.sidebarOpen) {
+            toggleSidebar();
+          } else if (!state.sidebarOpen && state.flat.length > 0) {
+            navigate(-1);
+          }
+        } else {
+          if (state.sidebarOpen) {
+            toggleSidebar();
+          } else if (state.flat.length > 0) {
+            navigate(1);
+          }
+        }
+        vibrate([5]);
+      }
+    }
+  }
+
+  // ✅ MODIFICADO: Usar API en lugar de google.script.run
+  async function initCourses() {
+    try {
+      const sheets = await apiGetSheets();
+      state.sheets = sheets || [];
+      const select = byId('courseSelect');
+      
+      select.innerHTML = '<option value="">Seleccionar...</option>' +
+        state.sheets.map(s => 
+          `<option value="${escapeHtml(s.name)}">${escapeHtml(s.name)}</option>`
+        ).join('');
+      
+      const firstSheet = state.sheets[0]?.name;
+      if (firstSheet) {
+        select.value = firstSheet;
+        loadCourse(firstSheet);
+      }
+    } catch (error) {
+      console.error('Error al cargar hojas:', error);
+      showToast('Error al conectar con el servidor');
+    }
+  }
+
+  // ✅ MODIFICADO: Usar API en lugar de google.script.run
+  async function loadCourse(sheetName) {
+    state.currentSheet = null;
+    state.items = [];
+    state.grouped.clear();
+    state.flat = [];
+    state.activeId = null;
+    
+    byId('navContainer').innerHTML = `
+      <div style="padding: 24px; text-align: center;">
+        <div class="loading-spinner"></div>
+        <p style="margin-top: 14px; color: #999; font-size: 14px; font-weight: 600;">Cargando recursos...</p>
+      </div>
+    `;
+    
+    byId('player').innerHTML = `
+      <div class="player-empty">
+        <div class="loading-spinner" style="width: 36px; height: 36px; border-width: 4px;"></div>
+        <p style="margin-top: 14px;">Cargando...</p>
+      </div>
+    `;
+    
+    state.currentSheet = sheetName;
+    byId('courseTitle').textContent = sheetName;
+    
+    closeSidebarIfMobile();
+    
+    try {
+      const data = await apiGetCourseData({
+        sheet: sheetName,
+        sort: 'order',
+        start: 0,
+        limit: 5000
+      });
+      
+      console.log(`Loaded ${data.items?.length || 0} items`);
+      
+      state.items = [];
+      state.grouped.clear();
+      state.flat = [];
+      
+      if (data && data.items) {
+        state.items = [...data.items];
+      }
+      
+      processAndRender();
+      
+      if (state.flat.length > 0) {
+        selectItem(state.flat[0].id);
+        updateResourceCounter();
+        updateProgressBar();
+        if (state.isMobile) {
+          showToast(`${state.flat.length} recursos cargados`);
+        }
+      } else {
+        clearPlayer();
+      }
+      
+    } catch (error) {
+      byId('navContainer').innerHTML = `
+        <div style="padding: 20px; text-align: center; color: #ef4444;">
+          <i class="fas fa-exclamation-circle" style="font-size: 40px; margin-bottom: 10px;"></i>
+          <p style="font-size: 14px;">Error al cargar</p>
+          <p style="font-size: 12px; margin-top: 8px; opacity: 0.8;">${error.message}</p>
+        </div>
+      `;
+      console.error(error);
+      showToast('Error al cargar recursos');
+    }
+  }
+
+  function refreshData() {
+    if (state.currentSheet) {
+      const btn = byId('btnRefresh');
+      const mobileBtn = byId('mobileRefreshBtn');
+      
+      if (btn) {
+        btn.querySelector('i').className = 'fas fa-sync-alt fa-spin';
+      }
+      if (mobileBtn) {
+        mobileBtn.querySelector('i').className = 'fas fa-sync-alt fa-spin';
+      }
+      
+      if (state.isMobile) {
+        showToast('Actualizando...');
+      }
+      
+      loadCourse(state.currentSheet);
+      
+      setTimeout(() => {
+        if (btn) btn.querySelector('i').className = 'fas fa-sync-alt';
+        if (mobileBtn) mobileBtn.querySelector('i').className = 'fas fa-sync-alt';
+      }, 1000);
+    }
+  }
+
+  function onSearch() {
+    processAndRender();
+    if (state.activeId && !state.flat.find(x => x.id === state.activeId)) {
+      if (state.flat.length > 0) {
+        selectItem(state.flat[0].id);
+      } else {
+        clearPlayer();
+      }
+    }
+    updateResourceCounter();
+    updateProgressBar();
+  }
+
+  function processAndRender() {
+    const query = (byId('searchInput').value || '').trim().toLowerCase();
+    
+    let filtered = state.items;
+    if (query) {
+      filtered = state.items.filter(item =>
+        (item.name && item.name.toLowerCase().includes(query)) ||
+        (item.folder && item.folder.toLowerCase().includes(query)) ||
+        (item.subfolder && item.subfolder.toLowerCase().includes(query))
+      );
+    }
+
+    const grouped = new Map();
+    filtered.forEach(item => {
+      const folder = item.folder || 'General';
+      const subfolder = item.subfolder || 'Recursos';
+      
+      if (!grouped.has(folder)) grouped.set(folder, new Map());
+      if (!grouped.get(folder).has(subfolder)) grouped.get(folder).set(subfolder, []);
+      grouped.get(folder).get(subfolder).push(item);
+    });
+
+    grouped.forEach(subMap => {
+      subMap.forEach(items => {
+        items.sort((a, b) => {
+          const orderA = Number.isFinite(+a.order) ? +a.order : Infinity;
+          const orderB = Number.isFinite(+b.order) ? +b.order : Infinity;
+          if (orderA !== orderB) return orderA - orderB;
+          return naturalCompare(a.name, b.name);
+        });
+      });
+    });
+
+    state.grouped = grouped;
+    
+    state.flat = [];
+    const sortedFolders = [...grouped.keys()].sort(naturalCompare);
+    sortedFolders.forEach(folder => {
+      const subMap = grouped.get(folder);
+      const sortedSubs = [...subMap.keys()].sort(naturalCompare);
+      sortedSubs.forEach(sub => {
+        state.flat.push(...(subMap.get(sub) || []));
+      });
+    });
+
+    renderSidebar();
+    updateNavigation();
+  }
+
+  function renderSidebar() {
+    const container = byId('navContainer');
+    
+    if (state.flat.length === 0) {
+      container.innerHTML = `
+        <div style="padding: 24px 16px; text-align: center;">
+          <i class="fas fa-search" style="font-size: 36px; color: #cbd5e1; margin-bottom: 12px;"></i>
+          <p style="color: #64748b; font-size: 13px;">No se encontraron recursos</p>
+        </div>
+      `;
+      return;
+    }
+
+    container.innerHTML = '';
+    
+    state.grouped.forEach((subMap, folder) => {
+      const section = document.createElement('div');
+      section.className = 'course-section';
+      
+      const sectionTitle = document.createElement('div');
+      sectionTitle.className = 'section-title';
+      sectionTitle.textContent = folder;
+      section.appendChild(sectionTitle);
+      
+      [...subMap.keys()].sort(naturalCompare).forEach(subfolder => {
+        const items = subMap.get(subfolder) || [];
+        
+        const subSection = document.createElement('div');
+        subSection.className = 'sub-section';
+        
+        const subTitle = document.createElement('div');
+        subTitle.className = 'sub-title';
+        subTitle.textContent = subfolder;
+        subSection.appendChild(subTitle);
+        
+        const list = document.createElement('ul');
+        list.className = 'lesson-list';
+        
+        items.forEach(item => {
+          const li = document.createElement('li');
+          li.className = 'lesson-item';
+          li.dataset.id = item.id;
+          if (item.id === state.activeId) li.classList.add('active');
+          
+          const link = document.createElement('a');
+          link.href = '#';
+          link.setAttribute('data-tooltip', item.name || 'Sin nombre');
+          link.innerHTML = `
+            <span class="lesson-icon">
+              <i class="${escapeHtml(item.icon || 'fas fa-file')}"></i>
+            </span>
+            <span class="lesson-name">${escapeHtml(item.name || 'Sin nombre')}</span>
+          `;
+          
+          link.addEventListener('click', e => {
+            e.preventDefault();
+            selectItem(item.id);
+            closeSidebarIfMobile();
+            vibrate([5]);
+          });
+          
+          li.appendChild(link);
+          list.appendChild(li);
+        });
+        
+        subSection.appendChild(list);
+        section.appendChild(subSection);
+      });
+      
+      container.appendChild(section);
+    });
+  }
+
+  function selectItem(id) {
+    const item = state.flat.find(x => x.id === id);
+    if (!item) return;
+    
+    state.activeId = id;
+    
+    $$('.lesson-item').forEach(el => {
+      el.classList.toggle('active', el.dataset.id === id);
+    });
+    
+    if (!state.isMobile) {
+      const activeElement = $(`.lesson-item[data-id="${id}"]`);
+      if (activeElement) {
+        activeElement.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+    }
+    
+    byId('contentTitle').textContent = item.name || 'Sin nombre';
+    byId('contentIcon').className = `${item.icon || 'fas fa-play-circle'} content-icon`;
+    
+    const breadcrumb = [];
+    if (item.folder) breadcrumb.push(item.folder);
+    if (item.subfolder) breadcrumb.push(item.subfolder);
+    byId('contentBreadcrumb').innerHTML = breadcrumb.length > 0 
+      ? breadcrumb.map(escapeHtml).join(' › ')
+      : 'Recurso principal';
+    
+    const player = byId('player');
+    const urlLower = String(item.url || '').toLowerCase();
+    
+    let canEmbed = false;
+    
+    if (item.embedUrl) {
+      const embeddableDomains = [
+        'drive.google.com/file/',
+        'docs.google.com/forms',
+        'forms.google.com',
+        'wayground.com',
+        'quizizz.com',
+        'youtube.com',
+        'youtu.be',
+        'padlet.com',
+        'genial.ly',
+        'canva.com',
+        'docs.google.com/presentation',
+        'docs.google.com/document',
+        'docs.google.com/spreadsheets'
+      ];
+      
+      canEmbed = embeddableDomains.some(domain => urlLower.includes(domain));
+      
+      if (urlLower.includes('kahoot.com') || urlLower.includes('kahoot.it')) {
+        canEmbed = false;
+      }
+    }
+    
+    if (canEmbed && item.embedUrl) {
+      const iframe = document.createElement('iframe');
+      iframe.allow = 'autoplay; clipboard-write; encrypted-media; picture-in-picture; fullscreen';
+      iframe.referrerPolicy = 'strict-origin-when-cross-origin';
+      iframe.allowFullscreen = true;
+      iframe.src = item.embedUrl;
+      iframe.title = item.name || 'Contenido embebido';
+      iframe.loading = 'lazy';
+      player.innerHTML = '';
+      player.appendChild(iframe);
+    } else if (item.url) {
+      let platformName = 'este recurso';
+      let platformIcon = 'fas fa-external-link-alt';
+      
+      if (urlLower.includes('kahoot')) {
+        platformName = 'Kahoot!';
+        platformIcon = 'fas fa-gamepad';
+      } else if (urlLower.includes('wayground')) {
+        platformName = 'Wayground';
+        platformIcon = 'fas fa-map';
+      } else if (urlLower.includes('forms.google')) {
+        platformName = 'Google Forms';
+        platformIcon = 'fas fa-clipboard-list';
+      }
+      
+      player.innerHTML = `
+        <div class="player-empty">
+          <i class="${platformIcon}" aria-hidden="true"></i>
+          <h3>${escapeHtml(item.name)}</h3>
+          <p>Este contenido se abre en una nueva ventana</p>
+          <a href="${escapeHtml(item.url)}" target="_blank" rel="noopener">
+            <span>Abrir ${platformName}</span>
+            <i class="fas fa-external-link-alt"></i>
+          </a>
+        </div>
+      `;
+    } else {
+      player.innerHTML = `
+        <div class="player-empty">
+          <i class="fas fa-exclamation-circle" aria-hidden="true"></i>
+          <p>No hay vista previa disponible</p>
+        </div>
+      `;
+    }
+    
+    updateNavigation();
+    updateProgressBar();
+    
+    if (state.isMobile) {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }
+
+  function clearPlayer() {
+    byId('contentTitle').textContent = 'Sin recursos disponibles';
+    byId('contentBreadcrumb').innerHTML = 'No hay recursos que coincidan';
+    byId('player').innerHTML = `
+      <div class="player-empty">
+        <i class="fas fa-search" aria-hidden="true"></i>
+        <p>No se encontraron recursos</p>
+      </div>
+    `;
+    updateNavigation();
+    updateProgressBar();
+  }
+
+  function navigate(direction) {
+    const currentIndex = state.flat.findIndex(x => x.id === state.activeId);
+    if (currentIndex === -1) return;
+    
+    const newIndex = currentIndex + direction;
+    if (newIndex >= 0 && newIndex < state.flat.length) {
+      selectItem(state.flat[newIndex].id);
+      
+      if (state.isMobile) {
+        const position = `${newIndex + 1} de ${state.flat.length}`;
+        showToast(position, 1500);
+      }
+    } else {
+      if (state.isMobile) {
+        vibrate([20, 50, 20]);
+        if (direction > 0) {
+          showToast('Último recurso', 1500);
+        } else {
+          showToast('Primer recurso', 1500);
+        }
+      }
+    }
+  }
+
+  function updateNavigation() {
+    const currentIndex = state.flat.findIndex(x => x.id === state.activeId);
+    const total = state.flat.length;
+    
+    byId('prevBtn').disabled = currentIndex <= 0;
+    byId('nextBtn').disabled = currentIndex === -1 || currentIndex >= total - 1;
+    
+    const mobilePrevBtn = byId('mobilePrevBtn');
+    const mobileNextBtn = byId('mobileNextBtn');
+    
+    if (mobilePrevBtn) mobilePrevBtn.disabled = currentIndex <= 0;
+    if (mobileNextBtn) mobileNextBtn.disabled = currentIndex === -1 || currentIndex >= total - 1;
+    
+    if (currentIndex >= 0 && total > 0) {
+      byId('navInfo').textContent = `${currentIndex + 1} de ${total}`;
+    } else {
+      byId('navInfo').textContent = '';
+    }
+  }
+
+  function updateResourceCounter() {
+    const counter = byId('resourceCounter');
+    if (counter && state.flat.length > 0) {
+      counter.textContent = state.flat.length;
+      counter.style.display = 'block';
+    } else if (counter) {
+      counter.style.display = 'none';
+    }
+  }
+
+  init();
+})();
+</script>
+
+</body>
+</html>

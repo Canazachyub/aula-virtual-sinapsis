@@ -1,0 +1,9 @@
+/**
+ * Archivo principal de estilos
+ * Importa todos los módulos CSS
+ */
+
+@import './variables.css';
+@import './base.css';
+@import './components.css';
+@import './responsive.css';
