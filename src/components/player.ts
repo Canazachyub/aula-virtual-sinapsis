@@ -11,7 +11,8 @@ export class Player {
   private zoomLevel: number = 1;
   private currentIframe: HTMLIFrameElement | null = null;
   private controlsHideTimer: number | null = null;
-  private longPressTimer: number | null = null;
+  private initialPinchDistance: number = 0;
+  private lastTapTime: number = 0;
 
   constructor(
     private playerElement: HTMLElement,
@@ -20,7 +21,8 @@ export class Player {
     private contentBreadcrumb: HTMLElement
   ) {
     this.setupFullscreenListener();
-    this.setupLongPressControls();
+    this.setupPinchZoom();
+    this.setupDoubleTap();
   }
 
   /**
@@ -58,8 +60,6 @@ export class Player {
   private renderEmbedded(item: CourseItem): void {
     // Detectar tipo de contenido
     const isPDF = item.mime === 'application/pdf' || item.type === 'pdf' || item.url.includes('.pdf');
-    const isVideo = item.mime?.includes('video') || item.type === 'video' || item.url.includes('youtube.com') || item.url.includes('vimeo.com');
-    const isForm = item.url.includes('forms.gle') || item.url.includes('forms.google.com');
 
     // Mejorar URL según tipo de contenido
     let enhancedUrl = item.embedUrl;
@@ -90,7 +90,7 @@ export class Player {
 
     // Agregar controles flotantes solo en móvil
     if (window.innerWidth <= 768) {
-      this.addFloatingControls(isPDF, isVideo, isForm);
+      this.addFloatingControls();
     }
   }
 
@@ -167,14 +167,14 @@ export class Player {
   }
 
   /**
-   * Agrega controles flotantes de zoom y fullscreen
+   * Agrega controles flotantes (solo fullscreen)
    */
-  private addFloatingControls(isPDF: boolean, isVideo: boolean, isForm: boolean): void {
+  private addFloatingControls(): void {
     // Crear contenedor de controles
     const controls = document.createElement('div');
     controls.className = 'player-controls';
 
-    // Botón de fullscreen (siempre visible en móvil)
+    // Botón de fullscreen
     const fullscreenBtn = document.createElement('button');
     fullscreenBtn.className = 'player-control-btn fullscreen';
     fullscreenBtn.innerHTML = '<i class="fas fa-expand"></i>';
@@ -182,63 +182,11 @@ export class Player {
     fullscreenBtn.addEventListener('click', () => this.toggleFullscreen());
     controls.appendChild(fullscreenBtn);
 
-    // Botones de zoom solo para PDFs y contenido externo (no para videos ni forms)
-    if (isPDF && !isVideo && !isForm) {
-      const zoomInBtn = document.createElement('button');
-      zoomInBtn.className = 'player-control-btn';
-      zoomInBtn.innerHTML = '<i class="fas fa-plus"></i>';
-      zoomInBtn.setAttribute('aria-label', 'Aumentar zoom');
-      zoomInBtn.addEventListener('click', () => this.zoomIn());
-      controls.appendChild(zoomInBtn);
-
-      const zoomOutBtn = document.createElement('button');
-      zoomOutBtn.className = 'player-control-btn';
-      zoomOutBtn.innerHTML = '<i class="fas fa-minus"></i>';
-      zoomOutBtn.setAttribute('aria-label', 'Reducir zoom');
-      zoomOutBtn.addEventListener('click', () => this.zoomOut());
-      controls.appendChild(zoomOutBtn);
-
-      const zoomResetBtn = document.createElement('button');
-      zoomResetBtn.className = 'player-control-btn';
-      zoomResetBtn.innerHTML = '<i class="fas fa-undo"></i>';
-      zoomResetBtn.setAttribute('aria-label', 'Restablecer zoom');
-      zoomResetBtn.addEventListener('click', () => this.resetZoom());
-      controls.appendChild(zoomResetBtn);
-    }
-
     this.playerElement.appendChild(controls);
   }
 
   /**
-   * Aumentar zoom
-   */
-  private zoomIn(): void {
-    if (this.zoomLevel < 3) {
-      this.zoomLevel += 0.25;
-      this.applyZoom();
-    }
-  }
-
-  /**
-   * Reducir zoom
-   */
-  private zoomOut(): void {
-    if (this.zoomLevel > 0.5) {
-      this.zoomLevel -= 0.25;
-      this.applyZoom();
-    }
-  }
-
-  /**
-   * Restablecer zoom
-   */
-  private resetZoom(): void {
-    this.zoomLevel = 1;
-    this.applyZoom();
-  }
-
-  /**
-   * Aplicar zoom al iframe
+   * Aplicar zoom al iframe (usado por pinch-to-zoom)
    */
   private applyZoom(): void {
     if (this.currentIframe) {
@@ -278,53 +226,77 @@ export class Player {
   }
 
   /**
-   * Configurar long-press para mostrar controles
+   * Configurar pinch-to-zoom con 2 dedos
    */
-  private setupLongPressControls(): void {
-    let touchStarted = false;
-
-    // Touch start - iniciar temporizador de long-press
+  private setupPinchZoom(): void {
     this.playerElement.addEventListener('touchstart', (e) => {
+      if (e.touches.length === 2) {
+        e.preventDefault();
+        this.initialPinchDistance = this.getDistanceBetweenTouches(e.touches);
+      }
+    }, { passive: false });
+
+    this.playerElement.addEventListener('touchmove', (e) => {
+      if (e.touches.length === 2 && this.initialPinchDistance > 0) {
+        e.preventDefault();
+
+        const currentDistance = this.getDistanceBetweenTouches(e.touches);
+        const scale = currentDistance / this.initialPinchDistance;
+
+        // Aplicar zoom incremental
+        const newZoomLevel = this.zoomLevel * scale;
+
+        // Limitar entre 0.5x y 3x
+        if (newZoomLevel >= 0.5 && newZoomLevel <= 3) {
+          this.zoomLevel = newZoomLevel;
+          this.applyZoom();
+        }
+
+        this.initialPinchDistance = currentDistance;
+      }
+    }, { passive: false });
+
+    this.playerElement.addEventListener('touchend', (e) => {
+      if (e.touches.length < 2) {
+        this.initialPinchDistance = 0;
+      }
+    });
+  }
+
+  /**
+   * Calcular distancia entre 2 puntos táctiles
+   */
+  private getDistanceBetweenTouches(touches: TouchList): number {
+    const touch1 = touches[0];
+    const touch2 = touches[1];
+
+    const dx = touch2.clientX - touch1.clientX;
+    const dy = touch2.clientY - touch1.clientY;
+
+    return Math.sqrt(dx * dx + dy * dy);
+  }
+
+  /**
+   * Configurar doble-tap para mostrar controles fullscreen
+   */
+  private setupDoubleTap(): void {
+    this.playerElement.addEventListener('touchend', (e) => {
+      // Solo con 1 dedo
+      if (e.touches.length > 0 || e.changedTouches.length !== 1) return;
+
       const target = e.target as HTMLElement;
-      // No activar si tocó un botón de control
       if (target.closest('.player-control-btn')) return;
 
-      touchStarted = true;
+      const currentTime = Date.now();
+      const timeSinceLastTap = currentTime - this.lastTapTime;
 
-      // Long-press: mantener 3 segundos
-      this.longPressTimer = window.setTimeout(() => {
-        if (touchStarted) {
-          this.showControls();
-          // Vibración para feedback (si está disponible)
-          if ('vibrate' in navigator) {
-            navigator.vibrate(50);
-          }
-        }
-      }, 3000);
-    });
-
-    // Touch move - cancelar si se mueve mucho (es scroll, no long-press)
-    this.playerElement.addEventListener('touchmove', () => {
-      if (this.longPressTimer) {
-        window.clearTimeout(this.longPressTimer);
-        touchStarted = false;
+      // Doble tap detectado (menos de 300ms entre taps)
+      if (timeSinceLastTap < 300 && timeSinceLastTap > 0) {
+        this.showControls();
+        this.lastTapTime = 0;
+      } else {
+        this.lastTapTime = currentTime;
       }
-    });
-
-    // Touch end - cancelar si suelta antes de 3 segundos
-    this.playerElement.addEventListener('touchend', () => {
-      if (this.longPressTimer) {
-        window.clearTimeout(this.longPressTimer);
-      }
-      touchStarted = false;
-    });
-
-    // Touch cancel - cancelar
-    this.playerElement.addEventListener('touchcancel', () => {
-      if (this.longPressTimer) {
-        window.clearTimeout(this.longPressTimer);
-      }
-      touchStarted = false;
     });
   }
 
@@ -338,14 +310,19 @@ export class Player {
     // Mostrar controles
     controls.classList.add('visible');
 
+    // Vibración corta para feedback
+    if ('vibrate' in navigator) {
+      navigator.vibrate(30);
+    }
+
     // Cancelar timer anterior
     if (this.controlsHideTimer) {
       window.clearTimeout(this.controlsHideTimer);
     }
 
-    // Ocultar después de 3 segundos
+    // Ocultar después de 4 segundos
     this.controlsHideTimer = window.setTimeout(() => {
       controls.classList.remove('visible');
-    }, 3000);
+    }, 4000);
   }
 }
