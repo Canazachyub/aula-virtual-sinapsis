@@ -126,7 +126,7 @@
   }
 
   .mobile-bottom-nav {
-    display: block;
+    display: none;
   }
 
   .content-header {
